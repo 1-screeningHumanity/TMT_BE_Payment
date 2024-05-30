@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: TMT-BE-PaymentServer
+  datasource:
+    url: ${MEMBER_DB}
+    username: ${MEMBER_DB_USER}
+    password: ${MEMBER_DB_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  redis:
+    host: ${REDIS_DB}
+    port: ${REDIS_PORT}
+
+  COOLSMS:
+    KEY: ${API_KEY}
+    SECRET: ${API_SECRET}
+    FROM: ${FROM_NUMBER}
+
+
+
+server:
+  port: 8080
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: member-server
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URl}
+
+logging:
+  level:
+    org.hibernate.type: debug
+    p6spy: info
+
+springdoc:
+  packages-to-scan: com.example
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+
+#Token
+JWT:
+  access-expiration: 300000     # ? ??
+  refresh-expiration: 86400000 #???
+  SECRET_KEY: sldkfjsoidfjwoeir12393012809vxcv89usdfkjn1203491iu0isdfl
