@@ -2,8 +2,12 @@ package com.TMT.TMT_BE_PaymentServer.payment.application;
 
 
 
+import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
+import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
+import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayReadyResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.infrastructure.PaymentRepository;
+import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentApproveVo;
 import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentReadyVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,7 +63,9 @@ public class PaymentServiceImp implements PaymentService {
 
         try{
             RestTemplate restTemplate = new RestTemplate();
-            HttpEntity<HashMap<String,String>> httpEntity = new HttpEntity<>(kakaopayrequest(paymentStockInfoVo, partnerOrderId, userId), this.getHeaders());
+            HttpEntity<HashMap<String,String>> httpEntity =
+                    new HttpEntity<>(kakaopayrequestBody(paymentStockInfoVo, partnerOrderId, userId),
+                            this.getHeaders());
 
             KaKaoPayReadyResponseDto response = restTemplate.postForObject(
                     "https://open-api.kakaopay.com/online/v1/payment/ready ",
@@ -68,6 +74,9 @@ public class PaymentServiceImp implements PaymentService {
             ); //RestTemplate를 이용해, 결제 요청 호출
 
             log.info("reponse: {}",response);
+
+            paymentSave(partnerOrderId, userId);
+
             return response;
 
         }catch (JsonProcessingException e){
@@ -77,14 +86,15 @@ public class PaymentServiceImp implements PaymentService {
 
 
     //요청 파라미터 설정
-    private HashMap<String, String> kakaopayrequest(PaymentReadyVo request, String partnerOrderId, String userId)
+    private HashMap<String, String> kakaopayrequestBody(PaymentReadyVo request,
+            String partnerOrderId, String userId)
             throws JsonProcessingException {
 
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("cid", cid);
         parameters.put("partner_order_id", partnerOrderId);
         parameters.put("partner_user_id", userId);
-        parameters.put("item_name", "asdasdasd");
+        parameters.put("item_name", request.getItemName());
         parameters.put("quantity", String.valueOf(request.getQuantity()));
         parameters.put("total_amount", String.valueOf(request.getTotalAmount()));
         parameters.put("tax_free_amount", "0");
@@ -92,22 +102,71 @@ public class PaymentServiceImp implements PaymentService {
         parameters.put("cancel_url", "http://localhost:8080");//결제 취소시 redirect url
         parameters.put("fail_url", "http://localhost:8080");//결제 실패시 redirect url
 
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-
-
         return parameters;
     }
 
     // 카카오페이 요청 헤더값
     private HttpHeaders getHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization",
-//                "Content-type: application/x-www-form-urlencoded;charset=utf-8" + secretKey);
-                                "SECRET_KEY " + secretKey);
-//        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        httpHeaders.set("Content-type",
-                "application/json");
+        httpHeaders.set("Authorization","SECRET_KEY " + secretKey);
+        httpHeaders.set("Content-type", "application/json");
         return httpHeaders;
     }
+
+    private void paymentSave(String parthnerOrderId, String uuid) {
+
+        PaymentLog payment = PaymentLog.builder()
+                .orderNum(parthnerOrderId)
+                .uuid(uuid)
+                .payMethod("KAKAO_PAY")
+                .paymentStatus(PaymentStatus.READY)
+                .build();
+
+        paymentRepository.save(payment);
+    } //결제 대기일때도 일단 DB에 저장
+
+    public String findPartnerOrderID(String uuid) {
+        PaymentLog payment = paymentRepository.findByUuid(uuid);
+        return payment.getOrderNum();
+    } //partnerOrderId를 담음.
+
+    //approve header
+    public KaKaoPayApproveResponseDto kakaoPayApprove(PaymentApproveVo paymentApproveVo, String uuid) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<HashMap<String, String>> httpEntity = new HttpEntity<>(
+                kakaoPayApproveBody(paymentApproveVo, uuid),getHeaders());
+
+        KaKaoPayApproveResponseDto response = restTemplate.postForObject(
+                "https://open-api.kakaopay.com/online/v1/payment/approve",
+                httpEntity,
+                KaKaoPayApproveResponseDto.class
+        );
+        return response;
+    }
+
+    //approve body 만듦
+    public HashMap<String, String> kakaoPayApproveBody(PaymentApproveVo
+            paymentApproveVo, String  uuid){
+
+        String partnerOrderId = findPartnerOrderID(uuid);
+
+        HashMap<String,String> parameters = new HashMap<>();
+        parameters.put("cid", cid);
+        parameters.put("tid", paymentApproveVo.getTid());
+        parameters.put("partner_order_id", partnerOrderId);
+        parameters.put("partner_user_id", uuid);
+        parameters.put("pg_token", paymentApproveVo.getApproval_url());
+
+        return parameters;
+    }
+
+    public void paymentResult(String uuid){
+        PaymentLog paymentLog;
+
+        paymentRepository.findByUuid(uuid);
+
+
+    }
+
 }
