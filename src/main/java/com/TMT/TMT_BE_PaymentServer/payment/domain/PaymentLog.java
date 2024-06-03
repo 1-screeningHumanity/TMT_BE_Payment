@@ -2,7 +2,6 @@ package com.TMT.TMT_BE_PaymentServer.payment.domain;
 
 
 import com.TMT.TMT_BE_PaymentServer.global.entity.BaseEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +17,9 @@ public class PaymentLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String paymentId;
+    private Long paymentId;
+
+    private String uuid;
 
     private String payName;
 
@@ -30,10 +31,11 @@ public class PaymentLog extends BaseEntity {
 
 
     @Builder
-    public PaymentLog(String paymentId, String payName, String payMethod, String totalAmount,
+    public PaymentLog(Long paymentId, String uuid, String payName, String payMethod, String totalAmount,
             String price) {
         this.paymentId = paymentId;
         this.payName = payName;
+        this.uuid = uuid;
         this.payMethod = payMethod;
         this.totalAmount = totalAmount;
         this.price = price;

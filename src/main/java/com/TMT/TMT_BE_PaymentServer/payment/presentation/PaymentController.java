@@ -26,12 +26,12 @@ public class PaymentController {
 
 
     @PostMapping("/payments/kakaopay")
-    public BaseResponse<Void> kakaoPayRequest(@RequestHeader("Authorization")String jwt,
+    public BaseResponse<Void> kakaoPayRequest(
             @RequestBody PaymentReadyVo paymentStockInfoVo) {
 
         log.info("!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        String uuid = decodingToken.getUuid(jwt);
+        String uuid = "";
         paymentServiceImp.KakaopayRequest(paymentStockInfoVo, uuid);
         return new BaseResponse<>();
     }

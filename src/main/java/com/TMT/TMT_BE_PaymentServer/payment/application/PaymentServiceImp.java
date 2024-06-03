@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -60,14 +59,17 @@ public class PaymentServiceImp implements PaymentService {
 
         try{
             RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<HashMap<String,String>> httpEntity = new HttpEntity<>(kakaopayrequest(paymentStockInfoVo, partnerOrderId, userId), this.getHeaders());
+
             KaKaoPayReadyResponseDto response = restTemplate.postForObject(
-                    "https://kapi.kakao.com/v1/payment/ready",
-                    new HttpEntity<>(
-                            this.kakaopayrequest(paymentStockInfoVo, partnerOrderId, userId), this.getHeaders()),
+                    "https://open-api.kakaopay.com/online/v1/payment/ready ",
+                    httpEntity,
                     KaKaoPayReadyResponseDto.class
             ); //RestTemplate를 이용해, 결제 요청 호출
 
+            log.info("reponse: {}",response);
             return response;
+
         }catch (JsonProcessingException e){
             throw new RuntimeException(e);
         }
@@ -75,31 +77,37 @@ public class PaymentServiceImp implements PaymentService {
 
 
     //요청 파라미터 설정
-    private String kakaopayrequest(PaymentReadyVo request, String partnerOrderId, String userId)
+    private HashMap<String, String> kakaopayrequest(PaymentReadyVo request, String partnerOrderId, String userId)
             throws JsonProcessingException {
-        log.info("kakaopayrequest userId: " + userId);
+
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("cid", cid);
         parameters.put("partner_order_id", partnerOrderId);
         parameters.put("partner_user_id", userId);
-        parameters.put("item_name", request.getItemName());
+        parameters.put("item_name", "asdasdasd");
         parameters.put("quantity", String.valueOf(request.getQuantity()));
         parameters.put("total_amount", String.valueOf(request.getTotalAmount()));
         parameters.put("tax_free_amount", "0");
-        parameters.put("approval_url", "http://localhost:8080/approval"); //결제성공시 redirect url
-        parameters.put("cancel_url", "http://localhost:8080/cancel");//결제 취소시 redirect url
-        parameters.put("fail_url", "http://localhost:8080/fail");//결제 실패시 redirect url
+        parameters.put("approval_url", "http://localhost:8080"); //결제성공시 redirect url
+        parameters.put("cancel_url", "http://localhost:8080");//결제 취소시 redirect url
+        parameters.put("fail_url", "http://localhost:8080");//결제 실패시 redirect url
+
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 
 
-        return objectMapper.writeValueAsString(parameters);
+        return parameters;
     }
 
     // 카카오페이 요청 헤더값
     private HttpHeaders getHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "KakaoAK " + secretKey);
+        httpHeaders.set("Authorization",
+//                "Content-type: application/x-www-form-urlencoded;charset=utf-8" + secretKey);
+                                "SECRET_KEY " + secretKey);
 //        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.set("Content-type",
+                "application/json");
         return httpHeaders;
     }
 }
