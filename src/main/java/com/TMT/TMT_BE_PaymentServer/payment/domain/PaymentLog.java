@@ -1,6 +1,7 @@
 package com.TMT.TMT_BE_PaymentServer.payment.domain;
 
 
+import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PayName;
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
 import com.TMT.TMT_BE_PaymentServer.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -20,31 +21,34 @@ public class PaymentLog extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
 
-    private String orderNum;
+    private String orderNum; //주문번호
 
-    private String uuid;
+    private String uuid; //uuid
 
-    private String payName;
+    private PayName payName; //결제플랫폼
 
-    private String payMethod;
+    private String payMethod; //결제수단(카드,현금)
 
-    private String totalAmount;
+    private int totalAmount; //총액
 
-    private String price;
+    private String itemName; //상품이름
 
-    private PaymentStatus paymentStatus;
+    private int quantity; //상품수량
+
+    private PaymentStatus paymentStatus;//결제상태
 
 
     @Builder
-    public PaymentLog(Long paymentId, String orderNum, String uuid, String payName, String payMethod, String totalAmount,
-            String price, PaymentStatus paymentStatus ) {
+    public PaymentLog(Long paymentId, String orderNum, String uuid, PayName payName, String payMethod, int totalAmount,
+            String itemName, int quantity, PaymentStatus paymentStatus ) {
         this.paymentId = paymentId;
         this.orderNum = orderNum;
         this.payName = payName;
         this.uuid = uuid;
         this.payMethod = payMethod;
         this.totalAmount = totalAmount;
-        this.price = price;
+        this.itemName = itemName;
+        this.quantity = quantity;
         this.paymentStatus = paymentStatus;
     }
 

@@ -1,7 +1,6 @@
 package com.TMT.TMT_BE_PaymentServer.payment.application;
 
-
-
+import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PayName;
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
 import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
@@ -23,9 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
-
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -78,7 +74,7 @@ public class PaymentServiceImp implements PaymentService {
                 response.getPartner_order_id(partnerOrderId);
             } //OrderNum 또한 담음
 
-            paymentSave(partnerOrderId, userId);
+//            paymentSave(partnerOrderId, userId);
 
             return response;
 
@@ -107,7 +103,6 @@ public class PaymentServiceImp implements PaymentService {
 
         return parameters;
     }
-
     // 카카오페이 요청 헤더값
     private HttpHeaders getHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -115,29 +110,12 @@ public class PaymentServiceImp implements PaymentService {
         httpHeaders.set("Content-type", "application/json");
         return httpHeaders;
     }
-
-    private void paymentSave(String parthnerOrderId, String uuid) {
-
-        PaymentLog payment = PaymentLog.builder()
-                .orderNum(parthnerOrderId)
-                .uuid(uuid)
-                .payMethod("KAKAO_PAY")
-                .paymentStatus(PaymentStatus.READY)
-                .build();
-
-        paymentRepository.save(payment);
-    } //결제 대기일때도 일단 DB에 저장
-
-    public String findPartnerOrderID(String uuid) {
-        PaymentLog payment = paymentRepository.findByUuid(uuid);
-        return payment.getOrderNum();
-    } //partnerOrderId를 담음.
-
     //approve header
     @Override
     public KaKaoPayApproveResponseDto kakaoPayApprove(PaymentApproveVo paymentApproveVo,
             String uuid) {
 
+        String orderNum = paymentApproveVo.getPartner_order_id();
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<HashMap<String, String>> httpEntity = new HttpEntity<>(
                 kakaoPayApproveBody(paymentApproveVo, uuid),getHeaders());
@@ -147,6 +125,7 @@ public class PaymentServiceImp implements PaymentService {
                 httpEntity,
                 KaKaoPayApproveResponseDto.class
         );
+        paymentLogSave(response, orderNum,uuid);
         return response;
     }
 
@@ -154,23 +133,32 @@ public class PaymentServiceImp implements PaymentService {
     public HashMap<String, String> kakaoPayApproveBody(PaymentApproveVo
             paymentApproveVo, String  uuid){
 
-        String partnerOrderId = findPartnerOrderID(uuid);
-
         HashMap<String,String> parameters = new HashMap<>();
         parameters.put("cid", cid);
         parameters.put("tid", paymentApproveVo.getTid());
-        parameters.put("partner_order_id", partnerOrderId);
+        parameters.put("partner_order_id", paymentApproveVo.getPartner_order_id());
         parameters.put("partner_user_id", uuid);
-        parameters.put("pg_token", paymentApproveVo.getApproval_url());
+        parameters.put("pg_token", paymentApproveVo.getPgToken());
 
         return parameters;
     }
 
-    public void paymentResult(String uuid){
-        PaymentLog paymentLog;
+    //paymentLog저장
+    private void paymentLogSave(KaKaoPayApproveResponseDto result, String orderNum, String uuid) {
 
-        paymentRepository.findByUuid(uuid);
+        PaymentLog payment = PaymentLog.builder()
+                .orderNum(orderNum)
+                .uuid(uuid)
+                .payName(PayName.KakaoPay)
+                .payMethod(result.getPayment_method_type())
+                .totalAmount(result.getAmount().getTotal())
+                .itemName(result.getItem_name())
+                .quantity(result.getQuantity())
+                .paymentStatus(PaymentStatus.SUCCESS)
+                .build();
 
-    }
+        paymentRepository.save(payment);
+    } //결제 대기일때도 일단 DB에 저장
+
 
 }

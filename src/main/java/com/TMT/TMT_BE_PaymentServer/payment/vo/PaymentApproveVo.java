@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class PaymentApproveVo {
 
     private String tid;
-    private String approval_url;
-
+    private String pgToken;
+    private String partner_order_id;
 }
