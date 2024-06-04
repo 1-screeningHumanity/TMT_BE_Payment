@@ -3,6 +3,7 @@ package com.TMT.TMT_BE_PaymentServer.payment.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor

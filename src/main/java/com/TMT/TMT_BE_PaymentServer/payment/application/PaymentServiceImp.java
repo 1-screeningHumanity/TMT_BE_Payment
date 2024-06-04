@@ -61,6 +61,7 @@ public class PaymentServiceImp implements PaymentService {
         String partnerOrderId = createOrderNum(); // 주문번호 생성
         String userId = uuid; // userid = uuid
 
+
         try{
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<HashMap<String,String>> httpEntity =
@@ -73,7 +74,9 @@ public class PaymentServiceImp implements PaymentService {
                     KaKaoPayReadyResponseDto.class
             ); //RestTemplate를 이용해, 결제 요청 호출
 
-            log.info("reponse: {}",response);
+            if (response != null) {
+                response.getPartner_order_id(partnerOrderId);
+            } //OrderNum 또한 담음
 
             paymentSave(partnerOrderId, userId);
 
@@ -82,8 +85,8 @@ public class PaymentServiceImp implements PaymentService {
         }catch (JsonProcessingException e){
             throw new RuntimeException(e);
         }
-    }
 
+    }
 
     //요청 파라미터 설정
     private HashMap<String, String> kakaopayrequestBody(PaymentReadyVo request,
@@ -131,7 +134,9 @@ public class PaymentServiceImp implements PaymentService {
     } //partnerOrderId를 담음.
 
     //approve header
-    public KaKaoPayApproveResponseDto kakaoPayApprove(PaymentApproveVo paymentApproveVo, String uuid) {
+    @Override
+    public KaKaoPayApproveResponseDto kakaoPayApprove(PaymentApproveVo paymentApproveVo,
+            String uuid) {
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<HashMap<String, String>> httpEntity = new HttpEntity<>(
@@ -165,7 +170,6 @@ public class PaymentServiceImp implements PaymentService {
         PaymentLog paymentLog;
 
         paymentRepository.findByUuid(uuid);
-
 
     }
 

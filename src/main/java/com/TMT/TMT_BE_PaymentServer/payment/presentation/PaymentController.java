@@ -32,6 +32,7 @@ public class PaymentController {
         KaKaoPayReadyResponseDto kaKaoPayReadyResponseDto =
                 paymentServiceImp.KakaopayRequest(paymentStockInfoVo, uuid);
 
+
         return new BaseResponse<>(kaKaoPayReadyResponseDto);
     }
 
