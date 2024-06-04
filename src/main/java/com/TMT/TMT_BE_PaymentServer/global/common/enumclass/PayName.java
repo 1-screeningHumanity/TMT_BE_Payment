@@ -11,6 +11,7 @@ public enum PayName  {
     private final String code;
 
     PayName(String code){
+
         this.code = code;
     }
 }

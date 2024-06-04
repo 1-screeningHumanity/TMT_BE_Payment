@@ -144,7 +144,9 @@ public class PaymentServiceImp implements PaymentService {
     }
 
     //paymentLog저장
-    private void paymentLogSave(KaKaoPayApproveResponseDto result, String orderNum, String uuid) {
+    @Override
+    @Transactional
+    public void paymentLogSave(KaKaoPayApproveResponseDto result, String orderNum, String uuid) {
 
         PaymentLog payment = PaymentLog.builder()
                 .orderNum(orderNum)

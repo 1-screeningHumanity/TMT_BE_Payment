@@ -37,19 +37,20 @@ public class PaymentLog extends BaseEntity {
 
     private PaymentStatus paymentStatus;//결제상태
 
-
     @Builder
-    public PaymentLog(Long paymentId, String orderNum, String uuid, PayName payName, String payMethod, int totalAmount,
-            String itemName, int quantity, PaymentStatus paymentStatus ) {
+    public PaymentLog(Long paymentId, String orderNum, String uuid, PayName payName,
+            String payMethod, int totalAmount, String itemName, int quantity,
+            PaymentStatus paymentStatus) {
+
         this.paymentId = paymentId;
         this.orderNum = orderNum;
-        this.payName = payName;
         this.uuid = uuid;
+        this.payName = payName;
         this.payMethod = payMethod;
         this.totalAmount = totalAmount;
         this.itemName = itemName;
         this.quantity = quantity;
         this.paymentStatus = paymentStatus;
-    }
 
+    }
 }

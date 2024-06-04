@@ -12,4 +12,9 @@ public interface PaymentService {
 
     //approve header
     KaKaoPayApproveResponseDto kakaoPayApprove(PaymentApproveVo paymentApproveVo, String uuid);
+
+    //paymentLog저장
+    void paymentLogSave(KaKaoPayApproveResponseDto result, String orderNum,
+            String uuid) //결제 대기일때도 일단 DB에 저장
+    ;
 }
