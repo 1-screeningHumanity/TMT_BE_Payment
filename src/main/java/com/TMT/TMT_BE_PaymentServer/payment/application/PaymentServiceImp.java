@@ -2,6 +2,8 @@ package com.TMT.TMT_BE_PaymentServer.payment.application;
 
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PayName;
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
+import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
+import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayReadyResponseDto;
@@ -79,7 +81,7 @@ public class PaymentServiceImp implements PaymentService {
             return response;
 
         }catch (JsonProcessingException e){
-            throw new RuntimeException(e);
+            throw new CustomException(BaseResponseCode.REST_TAMPLATE_WRONG_BODY);
         }
 
     }
@@ -160,7 +162,7 @@ public class PaymentServiceImp implements PaymentService {
                 .build();
 
         paymentRepository.save(payment);
-    } //결제 대기일때도 일단 DB에 저장
+    }
 
 
 }

@@ -5,6 +5,8 @@ import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PayName;
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
 import com.TMT.TMT_BE_PaymentServer.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +27,7 @@ public class PaymentLog extends BaseEntity {
 
     private String uuid; //uuid
 
+    @Enumerated(EnumType.STRING)
     private PayName payName; //결제플랫폼
 
     private String payMethod; //결제수단(카드,현금)
@@ -35,6 +38,7 @@ public class PaymentLog extends BaseEntity {
 
     private int quantity; //상품수량
 
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;//결제상태
 
     @Builder
