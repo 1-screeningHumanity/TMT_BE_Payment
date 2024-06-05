@@ -20,7 +20,10 @@ public enum BaseResponseCode {
     WRONG_TOKEN(HttpStatus.UNAUTHORIZED, false, 1004, "잘못된 토큰값"),
     EXIST_PHONENUMBER(HttpStatus.BAD_REQUEST, false, 1005, "이미 등록된 전화번호입니다."),
     WRONG_VARIFYCODE(HttpStatus.BAD_REQUEST, false, 1006, "잘못된 인증번호입니다."),
-    //
+
+    //payment
+    REST_TAMPLATE_WRONG_BODY(HttpStatus.BAD_REQUEST, false, 2000, "올바르지 않은 RequestBody"),
+    PAYMENT_SUCCESS(HttpStatus.OK, true, 2001, "결제 플랫폼"),
 
     //공통 에러. 9000 ~ 9999
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, 9000, "서버 에러"),
