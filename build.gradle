@@ -77,6 +77,9 @@ dependencies {
 	//coolsms
 	implementation 'net.nurigo:sdk:4.3.0'
 
+	//kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
 
 
 
