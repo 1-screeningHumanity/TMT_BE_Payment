@@ -26,9 +26,6 @@ spring:
   KAKAO:
     SECRET: ${KAKAOKEY}
 
-
-
-
 server:
   port: 0
 

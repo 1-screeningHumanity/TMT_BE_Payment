@@ -24,6 +24,9 @@ public enum BaseResponseCode {
     //payment
     REST_TAMPLATE_WRONG_BODY(HttpStatus.BAD_REQUEST, false, 2000, "올바르지 않은 RequestBody"),
     PAYMENT_SUCCESS(HttpStatus.OK, true, 2001, "결제 플랫폼"),
+    
+    //KafkaProducer
+    FAIL_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, false, 3000, "카프카 메세지 전송실패"),
 
     //공통 에러. 9000 ~ 9999
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, 9000, "서버 에러"),
