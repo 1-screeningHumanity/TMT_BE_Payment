@@ -4,15 +4,15 @@ import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PayName;
 import com.TMT.TMT_BE_PaymentServer.global.common.enumclass.PaymentStatus;
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
-import com.TMT.TMT_BE_PaymentServer.kafka.PaymentKafkaProducer;
 import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
+import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayReadyResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.infrastructure.PaymentRepository;
 import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentApproveVo;
 import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentReadyVo;
+import com.TMT.TMT_BE_PaymentServer.wallet.application.WalletServiceImp;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,8 +32,7 @@ import org.springframework.web.client.RestTemplate;
 public class PaymentServiceImp implements PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final ObjectMapper objectMapper;
-    private final PaymentKafkaProducer kafkaProducer;
+    private final WalletServiceImp walletServiceImp;
     static final String cid = "TC0ONETIME"; // 테스트용 CID
 
     @Value("${spring.KAKAO.SECRET}") // 시크릿 키
@@ -146,7 +145,6 @@ public class PaymentServiceImp implements PaymentService {
 
         return parameters;
     }
-
     //paymentLog저장
     @Override
     @Transactional
@@ -164,18 +162,17 @@ public class PaymentServiceImp implements PaymentService {
                 .build();
 
         paymentRepository.save(payment);
-        wordProcessing(uuid, result.getItem_name());
+        processDto(uuid, result.getItem_name()); //지갑정보 update
+    }
+    public void processDto (String uuid, String itemName){
+        // "캐시"를 제거
+        String processedItemName = itemName.replace("캐시", "");
+        int cash = Integer.parseInt(processedItemName);
 
+        CashUpdateDto cashUpdateDto = new CashUpdateDto();
+        cashUpdateDto.getCashUpdateDto(uuid, cash);
+
+        walletServiceImp.updateWallet(cashUpdateDto);
     }
 
-
-    public void wordProcessing(String uuid, String itemName){
-
-        String withoutWord = "캐시";
-        String processing = itemName.replace(withoutWord, "");
-        int cash = Integer.parseInt(processing);
-
-        kafkaProducer.sendMessage(uuid, cash);
-
-    }
 }
