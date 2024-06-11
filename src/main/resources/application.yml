@@ -1,6 +1,6 @@
 spring:
   application:
-    name: TMT-BE-PaymentServer
+    name: payment-server
 
   datasource:
     url: ${PAYMENT_DB}
