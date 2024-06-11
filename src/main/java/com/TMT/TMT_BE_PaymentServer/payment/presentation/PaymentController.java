@@ -24,7 +24,7 @@ public class PaymentController {
     private final PaymentServiceImp paymentServiceImp;
 //    private final ModelMapper modelMapper;
 
-    @PostMapping("/payments/kakaopay")
+    @PostMapping("/kakaopay")
     public BaseResponse<KaKaoPayReadyResponseDto> kakaoPayRequest(@RequestHeader
             ("Authorization") String jwt, @RequestBody PaymentReadyVo paymentStockInfoVo) {
 
@@ -36,7 +36,7 @@ public class PaymentController {
         return new BaseResponse<>(kaKaoPayReadyResponseDto);
     }
 
-    @PostMapping("/payments/kakaopay/approve")
+    @PostMapping("/kakaopay/approve")
     public BaseResponse<KaKaoPayApproveResponseDto> kakaoPayApprove(@RequestHeader
             ("Authorization") String jwt, @RequestBody PaymentApproveVo paymentApproveVo) {
 
