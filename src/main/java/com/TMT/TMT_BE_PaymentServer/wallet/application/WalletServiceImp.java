@@ -5,7 +5,6 @@ import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
@@ -28,9 +27,9 @@ public class WalletServiceImp implements WalletService {
 
     @Override
     @Transactional
-    public void createWallet(WalletDto walletDto) {
+    public void createWallet(String uuid) {
         Wallet wallet = Wallet.builder()
-                .uuid(walletDto.getUuid())
+                .uuid(uuid)
                 .cash(0)
                 .won(1000000L)
                 .build();

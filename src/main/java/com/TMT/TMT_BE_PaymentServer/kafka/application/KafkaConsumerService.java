@@ -33,16 +33,15 @@ public class KafkaConsumerService {
 
     //Member Server -> Wallet 생성
 
-    @KafkaListener(topics = "member-payment-singup")
+    @KafkaListener(topics = "member-payment-signup")
     public void processMessage(String kafkaMessage){
 
         log.info("kafka Message : {}", kafkaMessage);
-        WalletDto walletDto = parseMessage(kafkaMessage,
-                new TypeReference<WalletDto>() {});
-        if (walletDto != null){
-            log.info("findDto Id ={}",walletDto.getUuid());
-        }
-        walletService.createWallet(walletDto);
+        String uuid = kafkaMessage.trim();
+        log.info("singupUuid ={}", kafkaMessage.trim());
+
+        walletService.createWallet(uuid);
+
     }
 
     //TradeServer -> Wallet Won 감소

@@ -11,7 +11,9 @@ import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletService {
-    void createWallet(WalletDto walletDto);
+
+    @Transactional
+    void createWallet(String uuid);
 
     @Transactional
     void updateWallet(CashUpdateDto cashUpdateDto);
