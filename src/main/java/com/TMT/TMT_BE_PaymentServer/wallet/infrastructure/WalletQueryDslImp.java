@@ -4,7 +4,7 @@ import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
 
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWon;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
     @Transactional
     @Override
-    public void reservationIncreaseWon(ReservationIncreaseWon reservationIncreaseWon){
+    public void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon){
 
         jpaQueryFactory
                 .update(wallet)

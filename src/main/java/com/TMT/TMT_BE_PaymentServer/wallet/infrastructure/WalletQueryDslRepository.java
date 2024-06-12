@@ -2,7 +2,7 @@ package com.TMT.TMT_BE_PaymentServer.wallet.infrastructure;
 
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWon;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 
 public interface WalletQueryDslRepository {
@@ -14,5 +14,5 @@ public interface WalletQueryDslRepository {
 
     void increaseWon(IncreaseWonDto increaseWonDto);
 
-    void reservationIncreaseWon(ReservationIncreaseWon reservationIncreaseWon);
+    void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon);
 }

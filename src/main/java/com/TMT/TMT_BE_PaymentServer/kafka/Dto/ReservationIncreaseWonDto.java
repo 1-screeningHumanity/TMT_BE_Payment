@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationIncreaseWon {
+public class ReservationIncreaseWonDto {
 
     private String uuid;
     private Long won;
