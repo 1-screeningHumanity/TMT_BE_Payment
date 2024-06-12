@@ -2,6 +2,9 @@ package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWon;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
@@ -29,7 +32,7 @@ public class WalletServiceImp implements WalletService {
         Wallet wallet = Wallet.builder()
                 .uuid(walletDto.getUuid())
                 .cash(0)
-                .won(1000000)
+                .won(1000000L)
                 .build();
         walletRepository.save(wallet);
     }
@@ -67,14 +70,14 @@ public class WalletServiceImp implements WalletService {
     public ChargeWonResponseDto chargewon(String uuid, ChargeWonRequestVo chargeWonRequestVo){
 
         int cash = chargeWonRequestVo.getCash();
-        int won;
+        Long won;
 
         //cash to won
         if (cash % 1000 == 0) {
-            won = cash * 100;
+            won = (long) (cash * 100);
         } else {
             // 백 단위로 들어왔을 경우
-            won = (cash / 1000) * 100000 + (cash % 1000) * 100;
+            won = (long) ((cash / 1000) * 100000 + (cash % 1000) * 100);
         }
 
         //querydsl 메소드에 담아서 보냄.
@@ -91,6 +94,21 @@ public class WalletServiceImp implements WalletService {
         chargeWonResponseDto.getwon(won);
 
         return chargeWonResponseDto;
+    }
+    @Override
+    public void decreaseWon(DeductionWonDto deductionWonDto){
+        walletQueryDslImp.decreaseWon(deductionWonDto);
+    }
+
+    @Override
+    public void increaseWon(IncreaseWonDto increaseWonDto){
+        walletQueryDslImp.increaseWon(increaseWonDto);
+    }
+
+    @Override
+    public void reservationIncreaseWon(ReservationIncreaseWon reservationIncreaseWon){
+        walletQueryDslImp.reservationIncreaseWon(reservationIncreaseWon);
+
     }
 
 }

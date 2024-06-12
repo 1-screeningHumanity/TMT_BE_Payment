@@ -1,5 +1,8 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWon;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
@@ -17,4 +20,10 @@ public interface WalletService {
     CashDto hascash(String uuid);
 
     ChargeWonResponseDto chargewon(String uuid, ChargeWonRequestVo chargeWonRequestVo);
+
+    void decreaseWon(DeductionWonDto deductionWonDto);
+
+    void increaseWon(IncreaseWonDto increaseWonDto)
+
+    void reservationIncreaseWon(ReservationIncreaseWon reservationIncreaseWon);
 }
