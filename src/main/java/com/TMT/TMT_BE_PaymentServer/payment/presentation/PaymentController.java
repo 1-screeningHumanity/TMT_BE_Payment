@@ -4,12 +4,16 @@ package com.TMT.TMT_BE_PaymentServer.payment.presentation;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponse;
 import com.TMT.TMT_BE_PaymentServer.global.common.token.DecodingToken;
 import com.TMT.TMT_BE_PaymentServer.payment.application.PaymentServiceImp;
+import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayReadyResponseDto;
+import com.TMT.TMT_BE_PaymentServer.payment.dto.PaymentLogResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentApproveVo;
 import com.TMT.TMT_BE_PaymentServer.payment.vo.PaymentReadyVo;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -46,6 +50,16 @@ public class PaymentController {
 
         return  new BaseResponse<>(kaKaoPayApproveResponseDto);
 
+    }
+
+    @GetMapping("/log/info")
+    public BaseResponse<List<PaymentLogResponseDto>> paymentlog(@RequestHeader("Authorization") String jwt){
+
+
+        String uuid = decodingToken.getUuid(jwt);
+        List<PaymentLogResponseDto> paymentLogResponseDto = paymentServiceImp.paymentlog(uuid);
+
+        return new BaseResponse<>(paymentLogResponseDto);
     }
 
 
