@@ -1,18 +1,16 @@
-package com.TMT.TMT_BE_PaymentServer.wallet.dto;
+package com.TMT.TMT_BE_PaymentServer.kafka.Dto;
+
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ChargeWonQueryDslDto {
+public class DeductionWonDto {
 
     private String uuid;
     private Long won;
-    private int cash;
 
 }
