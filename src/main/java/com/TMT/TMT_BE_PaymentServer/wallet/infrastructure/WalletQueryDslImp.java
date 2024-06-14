@@ -36,7 +36,7 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
         jpaQueryFactory
                 .update(wallet)
-                .set(wallet.won, wallet.won.subtract(deductionWonDto.getWon()))
+                .set(wallet.won, wallet.won.subtract(deductionWonDto.getPrice()))
                 .where(wallet.uuid.eq(deductionWonDto.getUuid()))
                 .execute();
 
