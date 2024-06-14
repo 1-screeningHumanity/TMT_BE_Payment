@@ -75,31 +75,31 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "trade-payment-sale")
     public void increaseWon(String kafkaMessage) {
         log.info("Received Kafka message: {}", kafkaMessage);
-
-        IncreaseWonDto increaseWonDto = parseMessage(kafkaMessage,
-                new TypeReference<IncreaseWonDto>() {});
-
-        if (increaseWonDto != null) {
-            log.info("increaseWonDto uuid = {}", increaseWonDto.getUuid());
-            log.info("increaseWonDto won = {}", increaseWonDto.getWon());
-            walletService.increaseWon(increaseWonDto);
-        }
+//
+//        IncreaseWonDto increaseWonDto = parseMessage(kafkaMessage,
+//                new TypeReference<IncreaseWonDto>() {});
+//
+//        if (increaseWonDto != null) {
+//            log.info("increaseWonDto uuid = {}", increaseWonDto.getUuid());
+//            log.info("increaseWonDto won = {}", increaseWonDto.getWon());
+//            walletService.increaseWon(increaseWonDto);
+//        }
     }
 
     //TradeServer -> Wallet Won증가(예약매수 취소)
     @KafkaListener(topics = "trade-payment-reservationcancel")
     public void reservationIncreaseWon(String kafkaMessage) {
-
-        log.info("kafka Message : {}", kafkaMessage);
-        ReservationIncreaseWonDto reservationIncreaseWon = parseMessage(kafkaMessage,
-                new TypeReference<ReservationIncreaseWonDto>() {});
-
-        if(reservationIncreaseWon != null){
-            log.info("reservationIncreaseWon uuid = {}", reservationIncreaseWon.getUuid());
-            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getWon());
-        }
-
-        walletService.reservationIncreaseWon(reservationIncreaseWon);
+//
+//        log.info("kafka Message : {}", kafkaMessage);
+//        ReservationIncreaseWonDto reservationIncreaseWon = parseMessage(kafkaMessage,
+//                new TypeReference<ReservationIncreaseWonDto>() {});
+//
+//        if(reservationIncreaseWon != null){
+//            log.info("reservationIncreaseWon uuid = {}", reservationIncreaseWon.getUuid());
+//            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getWon());
+//        }
+//
+//        walletService.reservationIncreaseWon(reservationIncreaseWon);
     }
 
 }
