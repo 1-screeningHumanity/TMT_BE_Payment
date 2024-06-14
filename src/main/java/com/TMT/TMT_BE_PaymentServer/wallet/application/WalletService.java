@@ -14,16 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletService {
 
-
+    @Transactional
     void createWallet(String uuid);
 
-
+    @Transactional
     void updateWallet(CashUpdateDto cashUpdateDto);
 
     //캐시조회
     CashDto hascash(String uuid);
 
     ChargeWonResponseDto chargewon(String uuid, ChargeWonRequestVo chargeWonRequestVo);
+
     List<SendWalletInfoDto> sendWalletInfo();
     void decreaseWon(DeductionWonDto deductionWonDto);
 

@@ -49,6 +49,7 @@ public class WalletController {
         return new BaseResponse<>(chargeWonResponseDto);
     }
 
+
     @GetMapping("/send")
     public BaseResponse<List<SendWalletInfoDto>> sendWalletInfo(){
 
@@ -56,6 +57,7 @@ public class WalletController {
         return new BaseResponse<>(sendWalletInfo);
 
     }
+
 
 
 
