@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class DeductionWonDto {
 
     private String uuid;
-    private Long won;
+    private Long price;
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReservationIncreaseWonDto {
 
     private String uuid;
-    private Long won;
+    private Long price;
 
 
 }

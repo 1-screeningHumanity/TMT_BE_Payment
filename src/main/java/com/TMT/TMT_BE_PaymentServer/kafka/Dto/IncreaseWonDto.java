@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class IncreaseWonDto {
 
     private String uuid;
-    private Long won;
+    private Long price;
 
 }

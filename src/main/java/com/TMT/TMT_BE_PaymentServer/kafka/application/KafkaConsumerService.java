@@ -55,7 +55,7 @@ public class KafkaConsumerService {
 
         if(deductionWonDto != null){
             log.info("deductionWonDto uuid = {}", deductionWonDto.getUuid());
-            log.info("deductionWonDto won = {}", deductionWonDto.getWon());
+            log.info("deductionWonDto won = {}", deductionWonDto.getPrice());
         }
 
         walletService.decreaseWon(deductionWonDto);
@@ -71,7 +71,7 @@ public class KafkaConsumerService {
 
         if (increaseWonDto != null) {
             log.info("increaseWonDto uuid = {}", increaseWonDto.getUuid());
-            log.info("increaseWonDto won = {}", increaseWonDto.getWon());
+            log.info("increaseWonDto won = {}", increaseWonDto.getPrice());
             walletService.increaseWon(increaseWonDto);
         }
     }
@@ -86,7 +86,7 @@ public class KafkaConsumerService {
 
         if(reservationIncreaseWon != null){
             log.info("reservationIncreaseWon uuid = {}", reservationIncreaseWon.getUuid());
-            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getWon());
+            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getPrice());
         }
 
         walletService.reservationIncreaseWon(reservationIncreaseWon);
