@@ -1,5 +1,7 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
+import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
+
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
@@ -8,9 +10,12 @@ import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
+import com.TMT.TMT_BE_PaymentServer.wallet.dto.SendWalletInfoDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletQueryDslImp;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletRepository;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
+import com.querydsl.core.Tuple;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -91,6 +96,21 @@ public class WalletServiceImp implements WalletService {
         chargeWonResponseDto.getwon(won);
 
         return chargeWonResponseDto;
+    }
+
+
+    private SendWalletInfoDto maptoDto(Tuple tuple){
+        String uuid = tuple.get(wallet.uuid);
+        int won = tuple.get(wallet.won);
+        return new SendWalletInfoDto(uuid, won);
+    }
+
+    @Override //지갑 정보전송
+    public List<SendWalletInfoDto> sendWalletInfo(){
+        List<Tuple> sendRequestDto = walletQueryDslImp.sendwalletinfo();
+        List<SendWalletInfoDto> send = sendRequestDto.
+                stream().map(this::maptoDto).toList();
+        return send;
     }
 
 }
