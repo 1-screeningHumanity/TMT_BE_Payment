@@ -115,9 +115,10 @@ public class WalletServiceImp implements WalletService {
 
     }
 
+
     private SendWalletInfoDto maptoDto(Tuple tuple){
         String uuid = tuple.get(wallet.uuid);
-        int won = tuple.get(wallet.won);
+        Long won = tuple.get(wallet.won);
         return new SendWalletInfoDto(uuid, won);
     }
 
@@ -131,4 +132,3 @@ public class WalletServiceImp implements WalletService {
 
 }
 
-}

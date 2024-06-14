@@ -3,21 +3,19 @@ package com.TMT.TMT_BE_PaymentServer.wallet.application;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.SendWalletInfoDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletService {
 
-    @Transactional
+
     void createWallet(String uuid);
 
-    @Transactional
+
     void updateWallet(CashUpdateDto cashUpdateDto);
 
     //캐시조회
@@ -25,10 +23,12 @@ public interface WalletService {
 
     ChargeWonResponseDto chargewon(String uuid, ChargeWonRequestVo chargeWonRequestVo);
 
-    List<SendWalletInfoDto> sendWalletInfo();
     void decreaseWon(DeductionWonDto deductionWonDto);
 
     void increaseWon(IncreaseWonDto increaseWonDto);
 
     void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon);
+
+    //지갑 정보전송
+    List<SendWalletInfoDto> sendWalletInfo();
 }

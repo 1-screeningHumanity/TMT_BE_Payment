@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class SendWalletInfoDto {
 
     private String uuid;
-    private int won;
+    private Long won;
 
 }
