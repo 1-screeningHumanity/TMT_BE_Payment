@@ -10,6 +10,7 @@ import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
+import com.TMT.TMT_BE_PaymentServer.wallet.dto.WonInfoRequestDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletQueryDslImp;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletRepository;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
@@ -107,6 +108,19 @@ public class WalletServiceImp implements WalletService {
     @Override
     public void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon){
         walletQueryDslImp.reservationIncreaseWon(reservationIncreaseWon);
+
+    }
+    @Override
+    public WonInfoRequestDto getWonInfo(String uuid){
+       Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
+
+       if (wallet != null){
+           WonInfoRequestDto wonInfoRequestDto = new WonInfoRequestDto();
+           wonInfoRequestDto.getwon(wallet.get().getWon());
+           return wonInfoRequestDto;
+       }
+       throw new CustomException(BaseResponseCode.WRONG_TOKEN);
+
 
     }
 
