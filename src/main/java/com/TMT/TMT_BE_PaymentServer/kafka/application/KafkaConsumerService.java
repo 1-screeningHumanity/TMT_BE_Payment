@@ -22,14 +22,14 @@ public class KafkaConsumerService {
     private final ObjectMapper mapper = new ObjectMapper();
 
     //Json Parsing 처리 메소드
-//    private <T> T parseMessage(String kafkaMessage, TypeReference<T> typeReference) {
-//        try {
-//            return mapper.readValue(kafkaMessage, typeReference);
-//        } catch (JsonProcessingException e) {
-//            log.error("Failed to parse Kafka message", e);
-//            return null;
-//        }
-//    }
+    private <T> T parseMessage(String kafkaMessage, TypeReference<T> typeReference) {
+        try {
+            return mapper.readValue(kafkaMessage, typeReference);
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse Kafka message", e);
+            return null;
+        }
+    }
 
     //Member Server -> Wallet 생성
 
@@ -48,20 +48,10 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "trade-payment-buy")
     public void deductionWon(String kafkaMessage) {
 
-        ObjectMapper mapper = new ObjectMapper();
-        DeductionWonDto deductionWonDto = new DeductionWonDto();
-
         log.info("kafka Message : {}", kafkaMessage);
 
-//        DeductionWonDto deductionWonDto = parseMessage(kafkaMessage,
-//                new TypeReference<DeductionWonDto>() {});
-
-        try{
-            deductionWonDto = mapper.readValue(kafkaMessage, new TypeReference<>() {});
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-
+        DeductionWonDto deductionWonDto = parseMessage(kafkaMessage,
+                new TypeReference<DeductionWonDto>() {});
 
         if(deductionWonDto != null){
             log.info("deductionWonDto uuid = {}", deductionWonDto.getUuid());
@@ -75,31 +65,31 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "trade-payment-sale")
     public void increaseWon(String kafkaMessage) {
         log.info("Received Kafka message: {}", kafkaMessage);
-//
-//        IncreaseWonDto increaseWonDto = parseMessage(kafkaMessage,
-//                new TypeReference<IncreaseWonDto>() {});
-//
-//        if (increaseWonDto != null) {
-//            log.info("increaseWonDto uuid = {}", increaseWonDto.getUuid());
-//            log.info("increaseWonDto won = {}", increaseWonDto.getWon());
-//            walletService.increaseWon(increaseWonDto);
-//        }
+
+        IncreaseWonDto increaseWonDto = parseMessage(kafkaMessage,
+                new TypeReference<IncreaseWonDto>() {});
+
+        if (increaseWonDto != null) {
+            log.info("increaseWonDto uuid = {}", increaseWonDto.getUuid());
+            log.info("increaseWonDto won = {}", increaseWonDto.getPrice());
+            walletService.increaseWon(increaseWonDto);
+        }
     }
 
     //TradeServer -> Wallet Won증가(예약매수 취소)
     @KafkaListener(topics = "trade-payment-reservationcancel")
     public void reservationIncreaseWon(String kafkaMessage) {
-//
-//        log.info("kafka Message : {}", kafkaMessage);
-//        ReservationIncreaseWonDto reservationIncreaseWon = parseMessage(kafkaMessage,
-//                new TypeReference<ReservationIncreaseWonDto>() {});
-//
-//        if(reservationIncreaseWon != null){
-//            log.info("reservationIncreaseWon uuid = {}", reservationIncreaseWon.getUuid());
-//            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getWon());
-//        }
-//
-//        walletService.reservationIncreaseWon(reservationIncreaseWon);
+
+        log.info("kafka Message : {}", kafkaMessage);
+        ReservationIncreaseWonDto reservationIncreaseWon = parseMessage(kafkaMessage,
+                new TypeReference<ReservationIncreaseWonDto>() {});
+
+        if(reservationIncreaseWon != null){
+            log.info("reservationIncreaseWon uuid = {}", reservationIncreaseWon.getUuid());
+            log.info("reservationIncreaseWon won = {}", reservationIncreaseWon.getPrice());
+        }
+
+        walletService.reservationIncreaseWon(reservationIncreaseWon);
     }
 
 }

@@ -48,7 +48,7 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
         jpaQueryFactory
                 .update(wallet)
-                .set(wallet.won, wallet.won.add(increaseWonDto.getWon()))
+                .set(wallet.won, wallet.won.add(increaseWonDto.getPrice()))
                 .where(wallet.uuid.eq(increaseWonDto.getUuid()))
                 .execute();
     }
@@ -59,7 +59,7 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
         jpaQueryFactory
                 .update(wallet)
-                .set(wallet.won, wallet.won.add(reservationIncreaseWon.getWon()))
+                .set(wallet.won, wallet.won.add(reservationIncreaseWon.getPrice()))
                 .where(wallet.uuid.eq(reservationIncreaseWon.getUuid()))
                 .execute();
 
