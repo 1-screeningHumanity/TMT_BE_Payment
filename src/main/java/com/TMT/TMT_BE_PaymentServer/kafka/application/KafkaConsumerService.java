@@ -22,14 +22,14 @@ public class KafkaConsumerService {
     private final ObjectMapper mapper = new ObjectMapper();
 
     //Json Parsing 처리 메소드
-    private <T> T parseMessage(String kafkaMessage, TypeReference<T> typeReference) {
-        try {
-            return mapper.readValue(kafkaMessage, typeReference);
-        } catch (JsonProcessingException e) {
-            log.error("Failed to parse Kafka message", e);
-            return null;
-        }
-    }
+//    private <T> T parseMessage(String kafkaMessage, TypeReference<T> typeReference) {
+//        try {
+//            return mapper.readValue(kafkaMessage, typeReference);
+//        } catch (JsonProcessingException e) {
+//            log.error("Failed to parse Kafka message", e);
+//            return null;
+//        }
+//    }
 
     //Member Server -> Wallet 생성
 
@@ -48,10 +48,20 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "trade-payment-buy")
     public void deductionWon(String kafkaMessage) {
 
+        ObjectMapper mapper = new ObjectMapper();
+        DeductionWonDto deductionWonDto = new DeductionWonDto();
+
         log.info("kafka Message : {}", kafkaMessage);
 
-        DeductionWonDto deductionWonDto = parseMessage(kafkaMessage,
-                new TypeReference<DeductionWonDto>() {});
+//        DeductionWonDto deductionWonDto = parseMessage(kafkaMessage,
+//                new TypeReference<DeductionWonDto>() {});
+
+        try{
+            deductionWonDto = mapper.readValue(kafkaMessage, new TypeReference<>() {});
+        } catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+
 
         if(deductionWonDto != null){
             log.info("deductionWonDto uuid = {}", deductionWonDto.getUuid());
