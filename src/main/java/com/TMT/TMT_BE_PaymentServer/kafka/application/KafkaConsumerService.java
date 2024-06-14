@@ -55,7 +55,7 @@ public class KafkaConsumerService {
 
         if(deductionWonDto != null){
             log.info("deductionWonDto uuid = {}", deductionWonDto.getUuid());
-            log.info("deductionWonDto won = {}", deductionWonDto.getWon());
+            log.info("deductionWonDto won = {}", deductionWonDto.getPrice());
         }
 
         walletService.decreaseWon(deductionWonDto);
