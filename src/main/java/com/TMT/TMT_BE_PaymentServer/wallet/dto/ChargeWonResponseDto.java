@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChargeWonResponseDto {
 
-    public int won;
-    public void getwon(int won){
+    public Long won;
+    public void getwon(Long won){
         this.won = won;
     }
 
