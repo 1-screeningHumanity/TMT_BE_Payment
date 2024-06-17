@@ -107,9 +107,9 @@ public class PaymentServiceImp implements PaymentService {
         parameters.put("quantity", String.valueOf(request.getQuantity()));
         parameters.put("total_amount", String.valueOf(request.getTotalAmount()));
         parameters.put("tax_free_amount", "0");
-        parameters.put("approval_url", "https://screeninghumanity.store/"); //결제성공시 redirect url
-        parameters.put("cancel_url", "https://screeninghumanity.store/");//결제 취소시 redirect url
-        parameters.put("fail_url", "https://screeninghumanity.store/");//결제 실패시 redirect url
+        parameters.put("approval_url", "http://localhost:3000"); //결제성공시 redirect url
+        parameters.put("cancel_url", "http://localhost:3000");//결제 취소시 redirect url
+        parameters.put("fail_url", "http://localhost:3000/");//결제 실패시 redirect url
 
         return parameters;
     }
