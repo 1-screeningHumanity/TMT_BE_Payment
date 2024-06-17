@@ -84,7 +84,6 @@ public class PaymentServiceImp implements PaymentService {
                 response.getPartner_order_id(partnerOrderId);
             } //OrderNum 또한 담음
 
-//            paymentSave(partnerOrderId, userId);
 
             return response;
 

@@ -51,7 +51,7 @@ public class WalletController {
 
 
 
-    @GetMapping("/send")
+    @GetMapping("/send/dailywalletinfo")
     public BaseResponse<List<SendWalletInfoDto>> sendWalletInfo(){
 
         List<SendWalletInfoDto> sendWalletInfo = walletServiceImp.sendWalletInfo();
