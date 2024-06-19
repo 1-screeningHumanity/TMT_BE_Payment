@@ -16,9 +16,9 @@ spring:
 
   KAKAO:
     SECRET: ${KAKAOKEY}
-    APPROVE: ${URL}
-    CANCEL: ${URL}
-    FAIL: ${URL}
+    APPROVE: https://screeninghumanity.store/mypage
+    CANCEL: https://screeninghumanity.store/mypage
+    FAIL: https://screeninghumanity.store/mypage
 
 
 server:
