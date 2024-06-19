@@ -183,7 +183,7 @@ public class PaymentServiceImp implements PaymentService {
         CashUpdateDto cashUpdateDto = new CashUpdateDto();
         cashUpdateDto.getCashUpdateDto(uuid, cash);
 
-        walletServiceImp.updateWallet(cashUpdateDto);
+        walletServiceImp.increaseCash(cashUpdateDto);
     }
 
     private PaymentLogResponseDto maptoDto(Tuple tuple) { //tuple to dto
