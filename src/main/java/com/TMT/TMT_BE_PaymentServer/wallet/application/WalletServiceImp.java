@@ -1,5 +1,7 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
+import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
+
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
@@ -10,10 +12,13 @@ import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
+import com.TMT.TMT_BE_PaymentServer.wallet.dto.SendWalletInfoDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.WonInfoRequestDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletQueryDslImp;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletRepository;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
+import com.querydsl.core.Tuple;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,20 +42,8 @@ public class WalletServiceImp implements WalletService {
         walletRepository.save(wallet);
     }
     @Override
-    @Transactional
-    public void updateWallet(CashUpdateDto cashUpdateDto){
-        String uuid = cashUpdateDto.getUuid();
-        Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
-        if (wallet != null){
-            Wallet changeCash = Wallet
-                    .builder()
-                    .wallet_id(wallet.get().getWallet_id())
-                    .uuid(wallet.get().getUuid())
-                    .won(wallet.get().getWon())
-                    .cash(cashUpdateDto.getCash())
-                    .build();
-            walletRepository.save(changeCash);
-        }
+    public void increaseCash(CashUpdateDto cashUpdateDto){
+        walletQueryDslImp.increaseCash(cashUpdateDto);
     }
 
     @Override //캐시조회
@@ -110,18 +103,35 @@ public class WalletServiceImp implements WalletService {
         walletQueryDslImp.reservationIncreaseWon(reservationIncreaseWon);
 
     }
+
+
+    private SendWalletInfoDto maptoDto(Tuple tuple){
+        String uuid = tuple.get(wallet.uuid);
+        Long won = tuple.get(wallet.won);
+        return new SendWalletInfoDto(uuid, won);
+    }
+
+    @Override //지갑 정보전송
+    public List<SendWalletInfoDto> sendWalletInfo(){
+        List<Tuple> sendRequestDto = walletQueryDslImp.sendwalletinfo();
+        List<SendWalletInfoDto> send = sendRequestDto.
+                stream().map(this::maptoDto).toList();
+        return send;
+    }
+
     @Override
     public WonInfoRequestDto getWonInfo(String uuid){
-       Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
+        Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
 
-       if (wallet != null){
-           WonInfoRequestDto wonInfoRequestDto = new WonInfoRequestDto();
-           wonInfoRequestDto.getwon(wallet.get().getWon());
-           return wonInfoRequestDto;
-       }
-       throw new CustomException(BaseResponseCode.WRONG_TOKEN);
+        if (wallet != null){
+            WonInfoRequestDto wonInfoRequestDto = new WonInfoRequestDto();
+            wonInfoRequestDto.getwon(wallet.get().getWon());
+            return wonInfoRequestDto;
+        }
+        throw new CustomException(BaseResponseCode.WRONG_TOKEN);
 
 
     }
 
 }
+

@@ -16,6 +16,10 @@ spring:
 
   KAKAO:
     SECRET: ${KAKAOKEY}
+    APPROVE: https://screeninghumanity.store/mypage
+    CANCEL: https://screeninghumanity.store/mypage
+    FAIL: https://screeninghumanity.store/mypage
+
 
 server:
   port: 0

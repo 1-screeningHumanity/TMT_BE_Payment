@@ -4,7 +4,6 @@ import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.application.WalletServiceImp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
