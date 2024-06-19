@@ -13,6 +13,7 @@ import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.SendWalletInfoDto;
+import com.TMT.TMT_BE_PaymentServer.wallet.dto.WonInfoRequestDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletQueryDslImp;
 import com.TMT.TMT_BE_PaymentServer.wallet.infrastructure.WalletRepository;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
@@ -41,20 +42,8 @@ public class WalletServiceImp implements WalletService {
         walletRepository.save(wallet);
     }
     @Override
-    @Transactional
-    public void updateWallet(CashUpdateDto cashUpdateDto){
-        String uuid = cashUpdateDto.getUuid();
-        Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
-        if (wallet != null){
-            Wallet changeCash = Wallet
-                    .builder()
-                    .wallet_id(wallet.get().getWallet_id())
-                    .uuid(wallet.get().getUuid())
-                    .won(wallet.get().getWon())
-                    .cash(cashUpdateDto.getCash())
-                    .build();
-            walletRepository.save(changeCash);
-        }
+    public void increaseCash(CashUpdateDto cashUpdateDto){
+        walletQueryDslImp.increaseCash(cashUpdateDto);
     }
 
     @Override //캐시조회
@@ -128,6 +117,20 @@ public class WalletServiceImp implements WalletService {
         List<SendWalletInfoDto> send = sendRequestDto.
                 stream().map(this::maptoDto).toList();
         return send;
+    }
+
+    @Override
+    public WonInfoRequestDto getWonInfo(String uuid){
+        Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
+
+        if (wallet != null){
+            WonInfoRequestDto wonInfoRequestDto = new WonInfoRequestDto();
+            wonInfoRequestDto.getwon(wallet.get().getWon());
+            return wonInfoRequestDto;
+        }
+        throw new CustomException(BaseResponseCode.WRONG_TOKEN);
+
+
     }
 
 }

@@ -106,9 +106,9 @@ public class PaymentServiceImp implements PaymentService {
         parameters.put("quantity", String.valueOf(request.getQuantity()));
         parameters.put("total_amount", String.valueOf(request.getTotalAmount()));
         parameters.put("tax_free_amount", "0");
-        parameters.put("approval_url", "http://localhost:8080"); //결제성공시 redirect url
-        parameters.put("cancel_url", "http://localhost:8080");//결제 취소시 redirect url
-        parameters.put("fail_url", "http://localhost:8080");//결제 실패시 redirect url
+        parameters.put("approval_url", "http://localhost:3000/payments/continue"); //결제성공시 redirect url
+        parameters.put("cancel_url", "http://localhost:3000/payments/continue");//결제 취소시 redirect url
+        parameters.put("fail_url", "http://localhost:3000/payments/continue/");//결제 실패시 redirect url
 
         return parameters;
     }
@@ -182,7 +182,7 @@ public class PaymentServiceImp implements PaymentService {
         CashUpdateDto cashUpdateDto = new CashUpdateDto();
         cashUpdateDto.getCashUpdateDto(uuid, cash);
 
-        walletServiceImp.updateWallet(cashUpdateDto);
+        walletServiceImp.increaseCash(cashUpdateDto);
     }
 
     private PaymentLogResponseDto maptoDto(Tuple tuple) { //tuple to dto

@@ -9,6 +9,7 @@ import com.TMT.TMT_BE_PaymentServer.wallet.application.WalletServiceImp;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.SendWalletInfoDto;
+import com.TMT.TMT_BE_PaymentServer.wallet.dto.WonInfoRequestDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.vo.ChargeWonRequestVo;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,16 @@ public class WalletController {
 
         return new BaseResponse<>(chargeWonResponseDto);
     }
-    
+
+    @GetMapping("/woninfo")
+    public BaseResponse<WonInfoRequestDto> wonInfo(@RequestHeader ("Authorization") String jwt){
+
+        String uuid = decodingToken.getUuid(jwt);
+        WonInfoRequestDto wonInfoRequestDto = walletServiceImp.getWonInfo(uuid);
+
+        return new BaseResponse<>(wonInfoRequestDto);
+    }
+
     @GetMapping("/send/dailywalletinfo")
     public BaseResponse<List<SendWalletInfoDto>> sendWalletInfo(){
 
@@ -56,9 +66,6 @@ public class WalletController {
         return new BaseResponse<>(sendWalletInfo);
 
     }
-
-
-
 
 
 }
