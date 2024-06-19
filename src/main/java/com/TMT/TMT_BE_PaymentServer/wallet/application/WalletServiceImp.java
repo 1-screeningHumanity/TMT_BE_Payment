@@ -4,6 +4,7 @@ import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
 
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
@@ -30,12 +31,11 @@ public class WalletServiceImp implements WalletService {
 
     private final WalletRepository walletRepository;
     private final WalletQueryDslImp walletQueryDslImp;
-
     @Override
-    @Transactional
-    public void createWallet(String uuid) {
+    public void createWallet(CreateWalletDto createWalletDto) {
         Wallet wallet = Wallet.builder()
-                .uuid(uuid)
+                .uuid(createWalletDto.getUuid())
+                .nickname(createWalletDto.getNickname())
                 .cash(0)
                 .won(1000000L)
                 .build();

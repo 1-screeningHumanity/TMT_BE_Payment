@@ -23,13 +23,16 @@ public class Wallet extends BaseEntity {
 
     private String uuid; //uuid
 
+    private String nickname;
+
     private int cash; //캐시
 
     private Long won; //원
+
     @Builder
-    public Wallet(Long wallet_id, String uuid, int cash, Long won) {
-        this.wallet_id = wallet_id;
+    public Wallet(String uuid, String nickname, int cash, Long won) {
         this.uuid = uuid;
+        this.nickname = nickname;
         this.cash = cash;
         this.won = won;
     }
