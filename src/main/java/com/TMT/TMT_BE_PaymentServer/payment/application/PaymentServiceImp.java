@@ -45,6 +45,14 @@ public class PaymentServiceImp implements PaymentService {
     @Value("${spring.KAKAO.SECRET}") // 시크릿 키
     private String secretKey;
 
+    @Value("${spring.KAKAO.APPROVE}")
+    private String approve;
+
+    @Value("${spring.KAKAO.CANCEL}")
+    private String cancel;
+
+    @Value("${spring.KAKAO.FAIL}")
+    private String fail;
     public String createOrderNum() { // 주문번호 생성
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
         String currentDate = dateFormat.format(new Date()); // 현재 날짜 시간
@@ -106,9 +114,9 @@ public class PaymentServiceImp implements PaymentService {
         parameters.put("quantity", String.valueOf(request.getQuantity()));
         parameters.put("total_amount", String.valueOf(request.getTotalAmount()));
         parameters.put("tax_free_amount", "0");
-        parameters.put("approval_url", "http://localhost:3000/payments/continue"); //결제성공시 redirect url
-        parameters.put("cancel_url", "http://localhost:3000/payments/continue");//결제 취소시 redirect url
-        parameters.put("fail_url", "http://localhost:3000/payments/continue/");//결제 실패시 redirect url
+        parameters.put("approval_url", approve); //결제성공시 redirect url
+        parameters.put("cancel_url", cancel);//결제 취소시 redirect url
+        parameters.put("fail_url", fail);//결제 실패시 redirect url
 
         return parameters;
     }

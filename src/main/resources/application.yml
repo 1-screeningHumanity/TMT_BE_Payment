@@ -16,6 +16,10 @@ spring:
 
   KAKAO:
     SECRET: ${KAKAOKEY}
+    APPROVE: ${URL}
+    CANCEL: ${URL}
+    FAIL: ${URL}
+
 
 server:
   port: 0
