@@ -5,6 +5,7 @@ import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    @Transactional
+    public void increaseCash(CashUpdateDto cashUpdateDto){
+
+        jpaQueryFactory
+                .update(wallet)
+                .set(wallet.cash, wallet.cash.add(cashUpdateDto.getCash()))
+                .where(wallet.uuid.eq(cashUpdateDto.getUuid()))
+                .execute();
+
+    }
+
 
     @Override
     @Transactional

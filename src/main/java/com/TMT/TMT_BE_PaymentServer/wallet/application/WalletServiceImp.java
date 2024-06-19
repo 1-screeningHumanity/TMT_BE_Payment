@@ -37,20 +37,8 @@ public class WalletServiceImp implements WalletService {
         walletRepository.save(wallet);
     }
     @Override
-    @Transactional
-    public void updateWallet(CashUpdateDto cashUpdateDto){
-        String uuid = cashUpdateDto.getUuid();
-        Optional<Wallet> wallet = walletRepository.findByUuid(uuid);
-        if (wallet != null){
-            Wallet changeCash = Wallet
-                    .builder()
-                    .wallet_id(wallet.get().getWallet_id())
-                    .uuid(wallet.get().getUuid())
-                    .won(wallet.get().getWon())
-                    .cash(cashUpdateDto.getCash())
-                    .build();
-            walletRepository.save(changeCash);
-        }
+    public void increaseCash(CashUpdateDto cashUpdateDto){
+        walletQueryDslImp.increaseCash(cashUpdateDto);
     }
 
     @Override //캐시조회

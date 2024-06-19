@@ -3,7 +3,6 @@ package com.TMT.TMT_BE_PaymentServer.wallet.application;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.WalletDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.CashDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonResponseDto;
@@ -13,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletService {
 
-    @Transactional
     void createWallet(String uuid);
 
-    @Transactional
-    void updateWallet(CashUpdateDto cashUpdateDto);
+    void increaseCash(CashUpdateDto cashUpdateDto);
 
     //캐시조회
     CashDto hascash(String uuid);
@@ -30,4 +27,5 @@ public interface WalletService {
 
     void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon);
     WonInfoRequestDto getWonInfo(String uuid);
+
 }
