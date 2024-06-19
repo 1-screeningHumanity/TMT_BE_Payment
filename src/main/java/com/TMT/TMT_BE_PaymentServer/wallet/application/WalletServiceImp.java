@@ -1,12 +1,12 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
 import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
-
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.domain.Wallet;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class WalletServiceImp implements WalletService {
     private final WalletQueryDslImp walletQueryDslImp;
     @Override
     public void createWallet(CreateWalletDto createWalletDto) {
+
         Wallet wallet = Wallet.builder()
                 .uuid(createWalletDto.getUuid())
                 .nickname(createWalletDto.getNickname())
@@ -40,6 +40,7 @@ public class WalletServiceImp implements WalletService {
                 .won(1000000L)
                 .build();
         walletRepository.save(wallet);
+
     }
     @Override
     public void increaseCash(CashUpdateDto cashUpdateDto){
@@ -108,7 +109,8 @@ public class WalletServiceImp implements WalletService {
     private SendWalletInfoDto maptoDto(Tuple tuple){
         String uuid = tuple.get(wallet.uuid);
         Long won = tuple.get(wallet.won);
-        return new SendWalletInfoDto(uuid, won);
+        String nickname = tuple.get(wallet.nickname);
+        return new SendWalletInfoDto(uuid,nickname, won);
     }
 
     @Override //지갑 정보전송
@@ -131,6 +133,11 @@ public class WalletServiceImp implements WalletService {
         throw new CustomException(BaseResponseCode.WRONG_TOKEN);
 
 
+    }
+
+    @Override
+    public void changeNickname(NicknameChangeDto nicknameChangeDto){
+        walletQueryDslImp.changeNickname(nicknameChangeDto);
     }
 
 }

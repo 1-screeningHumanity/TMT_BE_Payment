@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class SendWalletInfoDto {
 
     private String uuid;
+    private String nickname;
     private Long won;
 
 }
