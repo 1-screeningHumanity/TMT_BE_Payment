@@ -4,7 +4,6 @@ package com.TMT.TMT_BE_PaymentServer.payment.presentation;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponse;
 import com.TMT.TMT_BE_PaymentServer.global.common.token.DecodingToken;
 import com.TMT.TMT_BE_PaymentServer.payment.application.PaymentServiceImp;
-import com.TMT.TMT_BE_PaymentServer.payment.domain.PaymentLog;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayApproveResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.KaKaoPayReadyResponseDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.PaymentLogResponseDto;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+
+//VO - DTO 통일하기
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -35,7 +36,6 @@ public class PaymentController {
         String uuid = decodingToken.getUuid(jwt);
         KaKaoPayReadyResponseDto kaKaoPayReadyResponseDto =
                 paymentServiceImp.KakaopayRequest(paymentStockInfoVo, uuid);
-
 
         return new BaseResponse<>(kaKaoPayReadyResponseDto);
     }

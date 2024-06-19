@@ -5,13 +5,15 @@ import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.querydsl.core.Tuple;
+import java.util.List;
 public interface WalletQueryDslRepository {
 
     void increaseCash(CashUpdateDto cashUpdateDto);
 
     void updateWon(ChargeWonQueryDslDto chargeWonQueryDslDto);
+
+    List<Tuple> sendwalletinfo();
 
     void decreaseWon(DeductionWonDto deductionWonDto);
 

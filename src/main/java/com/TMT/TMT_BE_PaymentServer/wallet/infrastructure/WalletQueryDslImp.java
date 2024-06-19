@@ -1,13 +1,14 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.infrastructure;
 
 import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
-
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,6 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
     }
 
-
     @Override
     @Transactional
     public void updateWon(ChargeWonQueryDslDto chargeWonQueryDslDto){
@@ -44,6 +44,13 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
     }
 
+    @Override
+    public List<Tuple> sendwalletinfo() {
+        return jpaQueryFactory
+                .select(wallet.uuid, wallet.won)
+                .from(wallet)
+                .fetch();
+    }
     @Transactional
     @Override
     public void decreaseWon(DeductionWonDto deductionWonDto) {
@@ -78,5 +85,6 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
                 .execute();
 
     }
+
 
 }

@@ -1,8 +1,6 @@
 package com.TMT.TMT_BE_PaymentServer.payment.infrastructure;
 
 import static com.TMT.TMT_BE_PaymentServer.payment.domain.QPaymentLog.paymentLog;
-
-import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
