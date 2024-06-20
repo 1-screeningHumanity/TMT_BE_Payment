@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateWalletDto {
+public class NicknameChangeDto {
 
-    private String uuid;
-    private String nickname;
+    private String beforeNickName;
+    private String afterNickName;
 
 }

@@ -3,6 +3,7 @@ package com.TMT.TMT_BE_PaymentServer.wallet.infrastructure;
 import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.payment.dto.CashUpdateDto;
 import com.TMT.TMT_BE_PaymentServer.wallet.dto.ChargeWonQueryDslDto;
@@ -46,10 +47,12 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
 
     @Override
     public List<Tuple> sendwalletinfo() {
+
         return jpaQueryFactory
-                .select(wallet.uuid, wallet.won)
+                .select(wallet.uuid, wallet.won, wallet.nickname)
                 .from(wallet)
                 .fetch();
+
     }
     @Transactional
     @Override
@@ -82,6 +85,18 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
                 .update(wallet)
                 .set(wallet.won, wallet.won.add(reservationIncreaseWon.getPrice()))
                 .where(wallet.uuid.eq(reservationIncreaseWon.getUuid()))
+                .execute();
+
+    }
+
+    @Transactional
+    @Override
+    public void changeNickname(NicknameChangeDto nicknameChangeDto){
+
+        jpaQueryFactory
+                .update(wallet)
+                .set(wallet.nickname, nicknameChangeDto.getAfterNickName())
+                .where(wallet.nickname.eq(nicknameChangeDto.getBeforeNickName()))
                 .execute();
 
     }
