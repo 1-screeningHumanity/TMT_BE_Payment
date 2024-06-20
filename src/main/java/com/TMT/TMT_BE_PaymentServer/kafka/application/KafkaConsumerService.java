@@ -1,7 +1,9 @@
 package com.TMT.TMT_BE_PaymentServer.kafka.application;
 
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.ReservationIncreaseWonDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.TMT.TMT_BE_PaymentServer.wallet.application.WalletServiceImp;
@@ -36,10 +38,15 @@ public class KafkaConsumerService {
     public void processMessage(String kafkaMessage){
 
         log.info("kafka Message : {}", kafkaMessage);
-        String uuid = kafkaMessage.trim();
-        log.info("singupUuid ={}", kafkaMessage.trim());
 
-        walletService.createWallet(uuid);
+        CreateWalletDto createWalletDto = parseMessage(kafkaMessage,
+                new TypeReference<CreateWalletDto>() {});
+        if (createWalletDto != null) {
+            log.info("createWalletDto uuid = {}", createWalletDto.getUuid());
+            log.info("createWalletDto nickname = {}", createWalletDto.getNickname());
+        }
+
+        walletService.createWallet(createWalletDto);
 
     }
 
@@ -89,6 +96,21 @@ public class KafkaConsumerService {
         }
 
         walletService.reservationIncreaseWon(reservationIncreaseWon);
+    }
+
+    @KafkaListener(topics = "member-subscribe-changenickname")
+    public void changeNicknmae(String kafkaMessage){
+
+        log.info("kafka Message : {}", kafkaMessage);
+        NicknameChangeDto nicknameChangeDto = parseMessage(kafkaMessage,
+                new TypeReference<NicknameChangeDto>() {});
+
+        if(nicknameChangeDto != null){
+            log.info("nicknameChangeDto beforenickname = {}", nicknameChangeDto.getBeforeNickName());
+            log.info("nicknameChangeDto afternickname = {}", nicknameChangeDto.getAfterNickName());
+        }
+
+        walletService.changeNickname(nicknameChangeDto);
     }
 
 }
