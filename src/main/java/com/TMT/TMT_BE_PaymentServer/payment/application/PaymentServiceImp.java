@@ -82,7 +82,7 @@ public class PaymentServiceImp implements PaymentService {
                             kakaopayrequestBody(paymentStockInfoVo, partnerOrderId, userId),
                             this.getHeaders());
 
-            KaKaoPayReadyResponseDto response = restTemplate.postForObject(
+            KaKaoPayReadyResponseDto response = restTemplate.postForObject( //POST
                     "https://open-api.kakaopay.com/online/v1/payment/ready ",
                     httpEntity,
                     KaKaoPayReadyResponseDto.class
@@ -201,7 +201,6 @@ public class PaymentServiceImp implements PaymentService {
         String orderNum = tuple.get(paymentLog.orderNum);
         return new PaymentLogResponseDto(payName, totalAmount, itemName, createdAt, orderNum);
     }
-
     @Override
     public List<PaymentLogResponseDto> paymentlog(String uuid) {
 

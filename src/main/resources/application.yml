@@ -16,13 +16,13 @@ spring:
 
   KAKAO:
     SECRET: ${KAKAOKEY}
-    APPROVE: https://screeninghumanity.store/mypage
+    APPROVE: http://localhost:3000/payments/continue
     CANCEL: https://screeninghumanity.store/mypage
     FAIL: https://screeninghumanity.store/mypage
 
 
 server:
-  port: 0
+  port: 8082
 
 eureka:
   instance:
