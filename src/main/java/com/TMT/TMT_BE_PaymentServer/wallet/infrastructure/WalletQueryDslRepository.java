@@ -1,5 +1,6 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.infrastructure;
 
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionCashDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
@@ -25,4 +26,6 @@ public interface WalletQueryDslRepository {
     void reservationIncreaseWon(ReservationIncreaseWonDto reservationIncreaseWon);
 
     void changeNickname(NicknameChangeDto nicknameChangeDto);
+
+    void decreaseCash(DeductionCashDto deductionCashDto);
 }

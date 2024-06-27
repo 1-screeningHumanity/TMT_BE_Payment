@@ -1,6 +1,7 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.application;
 
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionCashDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
@@ -36,4 +37,6 @@ public interface WalletService {
     WonInfoRequestDto getWonInfo(String uuid);
 
     void changeNickname(NicknameChangeDto nicknameChangeDto);
+
+    void deductionCash(DeductionCashDto deductionCashDto);
 }
