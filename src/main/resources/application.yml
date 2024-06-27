@@ -16,7 +16,7 @@ spring:
 
   KAKAO:
     SECRET: ${KAKAOKEY}
-    APPROVE: http://localhost:3000/payments/continue
+    APPROVE: https://screeninghumanity.store/mypage
     CANCEL: https://screeninghumanity.store/mypage
     FAIL: https://screeninghumanity.store/mypage
 
