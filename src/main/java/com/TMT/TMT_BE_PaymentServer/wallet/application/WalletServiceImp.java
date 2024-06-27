@@ -4,6 +4,7 @@ import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
 import com.TMT.TMT_BE_PaymentServer.global.common.exception.CustomException;
 import com.TMT.TMT_BE_PaymentServer.global.common.response.BaseResponseCode;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionCashDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
@@ -138,6 +139,11 @@ public class WalletServiceImp implements WalletService {
     @Override
     public void changeNickname(NicknameChangeDto nicknameChangeDto){
         walletQueryDslImp.changeNickname(nicknameChangeDto);
+    }
+
+    @Override
+    public void deductionCash(DeductionCashDto deductionCashDto){
+        walletQueryDslImp.decreaseCash(deductionCashDto);
     }
 
 }

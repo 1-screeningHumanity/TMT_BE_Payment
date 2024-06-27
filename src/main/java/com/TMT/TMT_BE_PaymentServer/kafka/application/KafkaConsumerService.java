@@ -1,6 +1,7 @@
 package com.TMT.TMT_BE_PaymentServer.kafka.application;
 
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.CreateWalletDto;
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionCashDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
@@ -111,6 +112,21 @@ public class KafkaConsumerService {
         }
 
         walletService.changeNickname(nicknameChangeDto);
+    }
+
+    @KafkaListener(topics = "subscribe-payment-changecash")
+    public void deductionCash(String kafkaMessage){
+
+        log.info("kafka Message : {}", kafkaMessage);
+        DeductionCashDto deductionCashDto = parseMessage(kafkaMessage,
+                new TypeReference<DeductionCashDto>() {});
+
+        if(deductionCashDto != null){
+            log.info("deductionCashDto uuid = {}", deductionCashDto.getUuid());
+            log.info("deductionCashDto cash = {}", deductionCashDto.getCash());
+        }
+
+        walletService.deductionCash(deductionCashDto);
     }
 
 }

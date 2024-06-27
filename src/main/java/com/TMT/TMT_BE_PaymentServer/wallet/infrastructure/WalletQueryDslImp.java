@@ -1,6 +1,8 @@
 package com.TMT.TMT_BE_PaymentServer.wallet.infrastructure;
 
 import static com.TMT.TMT_BE_PaymentServer.wallet.domain.QWallet.wallet;
+
+import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionCashDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.DeductionWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.IncreaseWonDto;
 import com.TMT.TMT_BE_PaymentServer.kafka.Dto.NicknameChangeDto;
@@ -99,6 +101,17 @@ public class WalletQueryDslImp implements  WalletQueryDslRepository{
                 .where(wallet.nickname.eq(nicknameChangeDto.getBeforeNickName()))
                 .execute();
 
+    }
+
+    @Transactional
+    @Override
+    public void decreaseCash(DeductionCashDto deductionCashDto){
+
+        jpaQueryFactory
+                .update(wallet)
+                .set(wallet.cash, wallet.cash.subtract(deductionCashDto.getCash()))
+                .where(wallet.uuid.eq(deductionCashDto.getUuid()))
+                .execute();
     }
 
 
