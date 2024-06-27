@@ -14,4 +14,5 @@ public class PaymentApproveVo {
     private String tid;
     private String pgToken;
     private String partner_order_id;
+
 }
