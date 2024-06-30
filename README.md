@@ -15,7 +15,7 @@
  - **Database** : MYSQL
  - **ORM** : ""
  - **Deploy** : AWS EC2 / Jenkins
- - **Dependencies** : JWT, Validation, Lombok, Model Mapper, Swagger, Eureka, Kakfa, FeignClient
+ - **Dependencies** : JWT, JPA, QUertyDsl, SpringWeb, Validation, Lombok, Model Mapper, Swagger, Eureka, Kakfa, FeignClient
 
 ## 🔧 Architecture
 - **Design Patter** : Hexagonal Architecture
